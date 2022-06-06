@@ -4,9 +4,9 @@
 
 @layer components {
     .header-payment {
-      @apply bg-gray-500 text-white uppercase p-2 flex space-x-4 rounded-sm;
+      @apply bg-stone-500 text-white uppercase px-2 py-3 flex space-x-4 rounded-sm;
     }
     .input-payment {
-      @apply p-2 rounded-sm border border-gray-600 w-full focus:bg-blue-50 my-2;
+      @apply p-2 rounded-sm border border-gray-500 w-full focus:bg-blue-100 focus:border focus:border-gray-700 my-2;
     }
 }
