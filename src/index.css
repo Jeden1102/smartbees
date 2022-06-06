@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .header-payment {
+      @apply bg-gray-500 text-white uppercase p-2 flex space-x-4 rounded-sm;
+    }
+    .input-payment {
+      @apply p-2 rounded-sm border border-gray-600 w-full focus:bg-blue-50 my-2;
+    }
+}
