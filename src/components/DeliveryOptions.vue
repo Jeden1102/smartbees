@@ -6,7 +6,7 @@
         </div>
         <div class="flex flex-col items-start justify-center space-y-6 p-4">
             <div v-for="deliveryMethod in deliveryMethods" class="flex items-center space-x-4">
-                <input :value="deliveryMethod.name"  @change="changeDeliveryMethod($event)" class="focus:ring-red-500  text-red-600 border-gray-300" type="radio" name="deliveryMethod" :id="deliveryMethod.name">
+                <input :checked="deliveryMethod.name=='paczkomaty'" :value="deliveryMethod.name"  @change="changeDeliveryMethod($event)" class="focus:ring-red-500  text-red-600 border-gray-300" type="radio" name="deliveryMethod" :id="deliveryMethod.name">
                 <label  :for="deliveryMethod.name" class="flex items-center justify-between w-full  space-x-4">
                     <img :src="deliveryMethod.img" class="w-20" alt="">
                     <span>{{deliveryMethod.text}}</span>
@@ -44,7 +44,10 @@ import { mapState } from 'vuex';
             changeDeliveryMethod(ev){
                 let method = ev.target.value;
                 this.$store.commit("setDeliveryMethod",method)
-            }
+                 let methodObj = this.deliveryMethods.filter(el=>el.name==method)
+                this.$store.commit("setDeliveryMethodPrice",methodObj[0].price)
+            },
+
         },
     }
 </script>

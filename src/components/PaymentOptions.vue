@@ -7,7 +7,7 @@
         <div class="flex flex-col items-start justify-center space-y-6 p-4">
         <TransitionGroup name="bounce">
             <div v-if="deliveryMethod != 'dpd2'" v-for="deliveryMethod in deliveryMethods" class="flex items-center space-x-4">
-                <input  @change="changePaymentMethod($event)" class="focus:ring-red-500  text-red-600 border-gray-300" type="radio" name="paymentMethod" :value="deliveryMethod.name" :id="deliveryMethod.name">
+                <input :checked="deliveryMethod.name=='payu'" @change="changePaymentMethod($event)" class="focus:ring-red-500  text-red-600 border-gray-300" type="radio" name="paymentMethod" :value="deliveryMethod.name" :id="deliveryMethod.name">
                 <label :for="deliveryMethod.name" class="flex items-center justify-between w-full  space-x-4">
                     <img :src="deliveryMethod.img" class="w-16" alt="">
                     <span>{{deliveryMethod.text}}</span>

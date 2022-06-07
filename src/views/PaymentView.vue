@@ -5,7 +5,7 @@
             <LoginModal @show-login-modal="showModal('login')" v-if="showLoginModal" class="fixed left-50 top-50"/>
             <OrderConfirmationModal @show-order-modal="showModal('order')" v-if="showOrderConfirmationModal" class="fixed left-50 top-50"/>
         </TransitionGroup >
-        <!-- <LoadingModal class="fixed left-0 top-0">TEST</LoadingModal> -->
+        <LoadingModal v-if="loading" class="fixed left-0 top-0"></LoadingModal>
         <div class="flex w-full sm:w-96 m-4">
             <!-- user details -->
             <UserDetails @show-login-modal="showModal('login')"/>
@@ -36,6 +36,8 @@ import CodeModal from '../components/CodeModal.vue';
 import LoginModal from '../components/LoginModal.vue';
 import LoadingModal from '../components/LoadingModal.vue';
 import OrderConfirmationModal from '../components/OrderConfirmationModal.vue';
+import { mapState } from 'vuex';
+
     export default {
         components:{
             UserDetails,
@@ -53,6 +55,11 @@ import OrderConfirmationModal from '../components/OrderConfirmationModal.vue';
                 showLoginModal:false,
                 showOrderConfirmationModal:false,
             }
+        },
+        computed: {
+        ...mapState([
+            'loading',
+        ])
         },
         methods: {
             showModal(type){

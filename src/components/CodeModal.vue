@@ -1,7 +1,7 @@
 <template>
     <div class=" bg-gray-800 bg-opacity-50 code-box z-20 w-full h-full flex items-center justify-center">
         <div class=" bg-gray-100 p-8 rounded-lg">
-            <img src="/src/assets/code.svg" class="mx-auto my-8 w-72" alt="">
+            <img src="/src/assets/code.svg" class="mx-auto my-8 w-60" alt="">
         <input v-model="code" type="text" class="input-payment" placeholder="Kod promocyjny">
         <div v-if="error" class="bg-red-500 p-2 text-white">
             {{ error }}
@@ -25,6 +25,7 @@ import axios from 'axios'
         },
         methods: {
             applyCode(){
+                this.$store.state.loading = true;
                 axios.get(`${import.meta.env.VITE_API_URL}code/${this.code}`).then(res=>{
                     console.log(res);
                     if(res.data.length==0){
@@ -39,6 +40,7 @@ import axios from 'axios'
                             this.error = "Ten kod promocyjny stracił ważność"
                         }
                     }
+                this.$store.state.loading = false;
                 })
                 console.log()
             },

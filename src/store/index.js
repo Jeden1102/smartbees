@@ -2,11 +2,13 @@ import {createStore} from 'vuex';
 const store = createStore({
     state:{
         userDetails:{},
-        deliveryMethod:'',
-        paymentMethod:'',
+        deliveryMethod:'paczkomaty',
+        deliveryPrice:10.99,
+        paymentMethod:'payu',
         promoCode:'',
         promoCodeValue:'',
         orderCode:'',
+        loading:false,
     },
     getters:{},
     actions:{},
@@ -35,6 +37,9 @@ const store = createStore({
         },
         setOrderCode(state,payload){
             state.orderCode = payload
+        },
+        setDeliveryMethodPrice(state,payload){
+            state.deliveryPrice=payload
         }
     },
     modules:{},

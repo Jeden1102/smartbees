@@ -8,7 +8,7 @@
             <div class="bg-gray-500 w-28 h-12">
             </div>
             <div class="flex flex-col">
-                <div class="flex font-bold justify-between w-full space-x-12 px-2">
+                <div class="flex font-bold w-full space-x-12 px-2">
                     <p >{{product.name}}</p>
                     <p >{{product.price.toFixed(2)}} zł</p>
                 </div>
@@ -18,17 +18,21 @@
             </div>
         </div>
         <div class="p-2 border-y border-dashed border-blue-400 my-1">
-            <div class="flex justify-around">
+            <div class="flex justify-center space-x-4 ">
                 <p>Suma częściowa</p>
-                <p>115,00zł</p>
+                <p>{{sumPrice}}zł</p>
             </div>
-            <div v-if="promoCodeValue" class="flex justify-around  font-bold">
+            <div class="flex justify-center space-x-4 ">
+                <p>Dostawa</p>
+                <p>{{ deliveryPrice }}zł</p>
+            </div>
+            <div v-if="promoCodeValue" class="flex justify-center space-x-4   font-bold">
                 <p>Kod bonusowy</p>
                 <p>- {{(sumPrice*promoCodeValue).toFixed(2)}} zł</p>
             </div>
-            <div class="flex justify-around text-xl font-bold">
+            <div class="flex justify-center space-x-4 text-xl font-bold">
                 <p>Łącznie</p>
-                <p>{{(sumPrice-(sumPrice*promoCodeValue)).toFixed(2)}}zł</p>
+                <p>{{(sumPriceWithDelivery-(sumPriceWithDelivery*promoCodeValue)).toFixed(2)}}zł</p>
             </div>
         </div>
         <div class="my-4">
@@ -74,9 +78,42 @@ import axios from 'axios';
             'deliveryMethod',
             'paymentMethod',
             'promoCodeValue',
-        ])
+            'deliveryPrice'
+        ]),
+        sumPriceWithDelivery(){
+            return this.sumPrice + this.deliveryPrice
+        }
         },
         methods: {
+            validateAdditionalAddress(){
+                    let additionalAddress = [];
+                    additionalAddress.push({name:'city',translation:"Miasto - dodatkowy adres dostawy"})
+                    additionalAddress.push({name:'address',translation:"Adres - dodatkowy adres"})
+                    additionalAddress.push({name:'postCode',translation:"Kod pocztowy - dodatkowy adres"})
+                    additionalAddress.push({name:'country',translation:"Kraj - dodatkowy adres"})
+                    additionalAddress.forEach(element => {
+                        let nazwa = element.name
+                        if(!this.userDetails.newAddress[nazwa]){
+                            console.log(nazwa)
+                            this.errors.push(`Pole ${element.translation} jest wymagane.`)
+                        }
+                    });
+            },
+            additionalValidations(){
+                if(isNaN(this.userDetails.phoneNumber)){
+                    this.errors.push("Numer telefonu musi być liczbą")
+                }
+                if(this.userDetails.phoneNumber.length<9){
+                    this.errors.push("Nieprawidłowa długość numeru telefonu")
+                }
+                let patternPostCode = /[0-9]{2}-[0-9]{3}/;
+                if(!patternPostCode.test(this.userDetails.postCode)){
+                    this.errors.push("Nieprawidłowy format kodu pocztowego, prawidłowy to : 12-345")
+                }
+                if(!this.regulations){
+                    this.errors.push("Zaakceptuj regulamin serwisu.")
+                }
+            },
             validateField(){
                 this.errors = [];
                 let requiredFields = [
@@ -88,12 +125,9 @@ import axios from 'axios';
                     {name:'country',translation:'Kraj'},
                     {name:'phoneNumber',translation:'Telefon'},
                 ];
-                // if(this.userDetails.setNewAddress){
-                //     requiredFields.push({name:'newAddress.city',translation:"Miasto"})
-                //     requiredFields.push({name:'newAddress.address',translation:"Adres"})
-                //     requiredFields.push({name:'newAddress.postCode',translation:"Kod pocztowy"})
-                //     requiredFields.push({name:'newAddress.country',translation:"Kraj"})
-                // }
+                if(this.userDetails.setNewAddress){
+                    this.validateAdditionalAddress();
+                }
                 requiredFields.forEach(element => {
                     let nazwa = element.name
                     if(!this.userDetails[nazwa]){
@@ -101,9 +135,7 @@ import axios from 'axios';
                         this.errors.push(`Pole ${element.translation} jest wymagane.`)
                     }
                 });
-                if(!this.regulations){
-                    this.errors.push("Zaakceptuj regulamin serwisu.")
-                }
+                this.additionalValidations();
                 if(this.errors.length>0){
                     return false;
                 }
@@ -113,14 +145,14 @@ import axios from 'axios';
             finalizeOrder(){
                 let validated = this.validateField();
                 if(validated){
-                    console.log('axios')
+                    this.$store.state.loading = true;
                     axios.post(`${import.meta.env.VITE_API_URL}order`,this.userDetails).then(res=>{
-                        console.log(res)
                         this.$store.commit('setOrderCode',res.data)
+                        this.$store.state.loading = false;
                     this.$emit('show-order-modal');
                     }).catch(err=>{
                         this.errors.push(err.response.data.message)
-                        console.log(err.response)
+                        this.$store.state.loading = false;
                     })
                 }
             }
