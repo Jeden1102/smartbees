@@ -25,8 +25,7 @@
 
 <style scoped>
 .code-box{
-    left:50%;
-    top:50%;
-    transform: translate(-50%,-50%);
+    left:0;
+    top:0;
 }
 </style>

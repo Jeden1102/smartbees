@@ -35,14 +35,16 @@
             <label for="newsletter">Zapisz się, aby otrzymać newsletter</label>
         </div>
         <div class="flex items-center  space-x-2">
-            <input class="h-4 w-4 text-red-600 focus:ring-red-500 p-1 border-gray-300 rounded" id="newsletter" type="checkbox">
-            <label for="newsletter">Zapoznałem/am się z <a class="text-blue-400" href="">Regulaminem</a>  zakupów</label>
+            <input class="h-4 w-4 text-red-600 focus:ring-red-500 p-1 border-gray-300 rounded" id="regulamin" type="checkbox">
+            <label for="regulamin">Zapoznałem/am się z <a class="text-blue-400" href="">Regulaminem</a>  zakupów</label>
         </div>
-        <button class="w-full p-2 py-6 border-2 border-red-500 text-white my-2 font-bold hover:bg-red-600 bg-red-500 transition uppercase rounded-sm">Potwierdź zakup</button>
+        <button @click="finalizeOrder" class="w-full p-2 py-6 border-2 border-red-500 text-white my-2 font-bold hover:bg-red-600 bg-red-500 transition uppercase rounded-sm">Potwierdź zakup</button>
+        {{ userDetails }}
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
     export default {
         data() {
             return {
@@ -50,7 +52,21 @@
                     {name:"Testowy produkt",quantity:1,price:115}
                 ]
             }
-        },   
+        },
+        computed: {
+        ...mapState([
+            'userDetails',
+            'deliveryMethod',
+            'paymentMethod',
+        ])
+        },
+        methods: {
+            finalizeOrder(){
+                console.log(this.userDetails);
+                console.log(this.deliveryMethod);
+                console.log(this.paymentMethod);
+            }
+        },
     }
 </script>
 
