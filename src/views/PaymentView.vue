@@ -3,6 +3,7 @@
         <TransitionGroup name="bounce">
             <CodeModal @show-code-modal="showModal('code')" v-if="showCodeModal" class="fixed left-50 top-50"/>
             <LoginModal @show-login-modal="showModal('login')" v-if="showLoginModal" class="fixed left-50 top-50"/>
+            <OrderConfirmationModal @show-order-modal="showModal('order')" v-if="showOrderConfirmationModal" class="fixed left-50 top-50"/>
         </TransitionGroup >
         <!-- <LoadingModal class="fixed left-0 top-0">TEST</LoadingModal> -->
         <div class="flex w-full sm:w-96 m-4">
@@ -21,7 +22,7 @@
         </div>
         <div class="flex w-full sm:w-96 m-4">
             <!-- summary -->
-            <Summary class="w-full sm:w-96"/>
+            <Summary  @show-order-modal="showModal('order')"  class="w-full sm:w-96"/>
         </div>
     </div>
 </template>
@@ -34,6 +35,7 @@ import Summary from '../components/Summary.vue';
 import CodeModal from '../components/CodeModal.vue';
 import LoginModal from '../components/LoginModal.vue';
 import LoadingModal from '../components/LoadingModal.vue';
+import OrderConfirmationModal from '../components/OrderConfirmationModal.vue';
     export default {
         components:{
             UserDetails,
@@ -42,12 +44,14 @@ import LoadingModal from '../components/LoadingModal.vue';
             Summary,
             CodeModal,
             LoginModal,
-            LoadingModal
+            LoadingModal,
+            OrderConfirmationModal
         },
         data() {
             return {
                 showCodeModal:false,
                 showLoginModal:false,
+                showOrderConfirmationModal:false,
             }
         },
         methods: {
@@ -55,6 +59,8 @@ import LoadingModal from '../components/LoadingModal.vue';
                 if(type == 'login'){
                     this.showCodeModal = false;
                     this.showLoginModal = !this.showLoginModal;
+                }else if(type=='order'){
+                    this.showOrderConfirmationModal = !this.showOrderConfirmationModal;
                 }else{
                     this.showLoginModal = false;
                     this.showCodeModal = !this.showCodeModal;

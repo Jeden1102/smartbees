@@ -22,7 +22,13 @@
             </div>
         </TransitionGroup>
         </div>
-        <button @click="showCodeModalMethod" class="w-full p-2 border-2 border-gray-500 text-gray-500 my-2 font-bold hover:bg-gray-500 hover:text-white transition">Dodaj kod rabatowy</button>
+        <TransitionGroup name="bounce">
+        <button v-if="!promoCode" @click="showCodeModalMethod" class="w-full p-2 border-2 border-gray-500 text-gray-500 my-2 font-bold hover:bg-gray-500 hover:text-white transition">Dodaj kod rabatowy</button>
+        <div v-else class="bg-stone-500 text-white font-bold p-2">
+            Użyty kod {{ promoCode }} 
+            <button @click="removeCode" class="bg-red-500 rounded-md hover:bg-red-600 p-2 mx-4 flex">Usuń <img src="/src/assets/trash-can.png" class="w-6" alt=""> </button>
+        </div>
+        </TransitionGroup>
     </div>
 </template>
 <script>
@@ -53,6 +59,8 @@ import { mapState } from 'vuex';
         computed: {
             ...mapState([
                 'deliveryMethod',
+                'promoCode',
+                'promoCodeValue',
             ])
         },
         methods: {
@@ -63,6 +71,9 @@ import { mapState } from 'vuex';
                 let method = ev.target.value;
                 console.log(method)
                 this.$store.commit("setPaymentMethod",method)
+            },
+            removeCode(){
+                this.$store.commit("removePromoCode")
             }
         },
     }

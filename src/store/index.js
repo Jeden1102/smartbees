@@ -4,6 +4,9 @@ const store = createStore({
         userDetails:{},
         deliveryMethod:'',
         paymentMethod:'',
+        promoCode:'',
+        promoCodeValue:'',
+        orderCode:'',
     },
     getters:{},
     actions:{},
@@ -15,12 +18,24 @@ const store = createStore({
             state.deliveryMethod = payload;
         },
         setPaymentMethod(state,payload){
-
             state.paymentMethod = payload;
         },
         setUserDetails(state,payload){
             state.userDetails = payload;
         },
+        setPromoCode(state,payload){
+            state.promoCode = payload;
+        },
+        setPromoCodeValue(state,payload){
+            state.promoCodeValue = payload;
+        },
+        removePromoCode(state){
+            state.promoCode = '';
+            state.promoCodeValue = '';
+        },
+        setOrderCode(state,payload){
+            state.orderCode = payload
+        }
     },
     modules:{},
 });
