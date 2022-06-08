@@ -43,7 +43,7 @@ import { mapState } from 'vuex';
             return {
                 deliveryMethods:[
                     {
-                        img:"/src/assets/payu.png",text:"PayU",name:"payu"
+                        img:"src/assets/payu.png",text:"PayU",name:"payu"
                     },
                     {
                         img:"/src/assets/Przelew.png",text:"Przelew bankowy - zwykły",name:"przelew"
