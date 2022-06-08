@@ -46,12 +46,12 @@ import { mapState } from 'vuex';
                         img:"src/assets/payu.png",text:"PayU",name:"payu"
                     },
                     {
-                        img:"/src/assets/Przelew.png",text:"Przelew bankowy - zwykły",name:"przelew"
+                        img:"src/assets/Przelew.png",text:"Przelew bankowy - zwykły",name:"przelew"
                     },
                 ],
                 deliveryMethodsSelect:[
                     {
-                        img:"/src/assets/cash-on-delivery.png",text:"Płatność przy odbiorze",name:"odbior"
+                        img:"src/assets/cash-on-delivery.png",text:"Płatność przy odbiorze",name:"odbior"
                     },
                 ]
             }

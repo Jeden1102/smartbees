@@ -24,13 +24,13 @@ import { mapState } from 'vuex';
             return {
                 deliveryMethods:[
                     {
-                        img:"/src/assets/inpost.png",text:"Paczkomaty 24/7",price:10.99,name:"paczkomaty"
+                        img:"src/assets/inpost.png",text:"Paczkomaty 24/7",price:10.99,name:"paczkomaty"
                     },
                     {
-                        img:"/src/assets/dpd.svg",text:"Kurier DPD",price:18.00,name:"dpd1"
+                        img:"src/assets/dpd.svg",text:"Kurier DPD",price:18.00,name:"dpd1"
                     },
                     {
-                        img:"/src/assets/dpd.svg",text:"Kurier DPD pobranie",price:22.00,name:"dpd2"
+                        img:"src/assets/dpd.svg",text:"Kurier DPD pobranie",price:22.00,name:"dpd2"
                     },
                 ],
             }
