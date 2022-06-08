@@ -17,6 +17,6 @@ git commit -m 'deploy'
 
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git subtree push --prefix dist origin gh-pages
+git subtree push --prefix dist origin gh-pages-2
 
 cd -
