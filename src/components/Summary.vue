@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="my-4">
-            <textarea  id="about" name="about" rows="3" class="my-3 shadow-sm focus:ring-red-500 resize-none focus:border-red-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="Komentarz"></textarea>
+            <textarea v-model="comment"  id="about" name="about" rows="3" class="my-3 shadow-sm focus:ring-red-500 resize-none focus:border-red-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="Komentarz"></textarea>
         </div>
         <div class="flex items-center  space-x-2">
             <input class="h-4 w-4 text-red-600 focus:ring-red-500 p-1 border-gray-300 rounded" id="newsletter" type="checkbox">
@@ -46,7 +46,10 @@
             <input v-model="regulations" class="h-4 w-4 text-red-600 focus:ring-red-500 p-1 border-gray-300 rounded" id="regulamin" type="checkbox">
             <label for="regulamin">Zapoznałem/am się z <a class="text-blue-400" href="">Regulaminem</a>  zakupów</label>
         </div>
+          <vue-recaptcha sitekey="6LcJvVEgAAAAAGMcT9N5YqalXfiPcfXyEB9o-VdJ">
         <button @click="finalizeOrder" class="w-full p-2 py-6 border-2 border-red-500 text-white my-2 font-bold hover:bg-red-600 bg-red-500 transition uppercase rounded-sm">Potwierdź zakup</button>
+  </vue-recaptcha>
+
         <Transition name="bounce">
         <div v-if="errors.length>0" class="w-full min-h-20 bg-yellow-300 text-black font-bold p-2">
             <img src="/src/assets/warning.png" class="h-8 w-8" alt="">
@@ -61,7 +64,11 @@
 <script>
 import { mapState } from 'vuex';
 import axios from 'axios';
+import { VueRecaptcha } from 'vue-recaptcha';
     export default {
+        components:{
+            VueRecaptcha 
+        },
         data() {
             return {
                 products:[
@@ -70,6 +77,7 @@ import axios from 'axios';
                 sumPrice:115,
                 errors:[],
                 regulations:false,
+                comment:'',
             }
         },
         computed: {
@@ -82,6 +90,9 @@ import axios from 'axios';
         ]),
         sumPriceWithDelivery(){
             return this.sumPrice + this.deliveryPrice
+        },
+        sumPriceWithDeliveryMinusCode(){
+            return (this.sumPriceWithDelivery-(this.sumPriceWithDelivery*this.promoCodeValue)).toFixed(2)
         }
         },
         methods: {
@@ -94,7 +105,6 @@ import axios from 'axios';
                     additionalAddress.forEach(element => {
                         let nazwa = element.name
                         if(!this.userDetails.newAddress[nazwa]){
-                            console.log(nazwa)
                             this.errors.push(`Pole ${element.translation} jest wymagane.`)
                         }
                     });
@@ -118,6 +128,7 @@ import axios from 'axios';
                 this.errors = [];
                 let requiredFields = [
                     {name:'name',translation:'Imię'},
+                    {name:'email',translation:'E-mail'},
                     {name:'surname',translation:'Nazwisko'},
                     {name:'city',translation:'Miasto'},
                     {name:'address',translation:'Adres'},
@@ -131,7 +142,6 @@ import axios from 'axios';
                 requiredFields.forEach(element => {
                     let nazwa = element.name
                     if(!this.userDetails[nazwa]){
-                        console.log(nazwa)
                         this.errors.push(`Pole ${element.translation} jest wymagane.`)
                     }
                 });
@@ -143,11 +153,16 @@ import axios from 'axios';
                 return true;
             },
             finalizeOrder(){
+                this.userDetails.cena = this.sumPriceWithDeliveryMinusCode;
+                this.userDetails.delivery = this.deliveryMethod;
+                this.userDetails.payment = this.paymentMethod;
+                this.userDetails.code = this.promoCodeValue;
+                this.userDetails.comment = this.comment;
                 let validated = this.validateField();
                 if(validated){
                     this.$store.state.loading = true;
                     axios.post(`${import.meta.env.VITE_API_URL}order`,this.userDetails).then(res=>{
-                        this.$store.commit('setOrderCode',res.data)
+                        this.$store.commit('setOrderCode',res.data.order_code)
                         this.$store.state.loading = false;
                     this.$emit('show-order-modal');
                     }).catch(err=>{

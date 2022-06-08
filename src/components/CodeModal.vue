@@ -25,9 +25,11 @@ import axios from 'axios'
         },
         methods: {
             applyCode(){
+                if(this.code.length==0){
+                    return this.error = "Kod nie może być pusty"
+                }
                 this.$store.state.loading = true;
                 axios.get(`${import.meta.env.VITE_API_URL}code/${this.code}`).then(res=>{
-                    console.log(res);
                     if(res.data.length==0){
                         this.error = "Taki kod promocyjny nie istnieje"
                     }else{
@@ -42,7 +44,6 @@ import axios from 'axios'
                     }
                 this.$store.state.loading = false;
                 })
-                console.log()
             },
             showCodeModalMethod(){
                 this.$emit('show-code-modal')

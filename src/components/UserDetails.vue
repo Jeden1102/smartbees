@@ -18,6 +18,7 @@
                 <input v-model="userDetails.passwordRepeat" type="password" class="input-payment" placeholder="Powtórz hasło">
             </div>
             </Transition>
+            <input v-model="userDetails.email" type="e-mail" class="input-payment" placeholder="Adres e-mail*">
             <input v-model="userDetails.name" type="text" class="input-payment" placeholder="Imię*">
             <input v-model="userDetails.surname" type="text" class="input-payment" placeholder="Nazwisko*">
                 <select v-model="userDetails.country" id="country" name="country" autocomplete="country-name" class="my-2 block w-full p-2 border border-gray-500 bg-white rounded-sm text-gray-500 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -70,6 +71,7 @@
                     password:'',
                     passwordRepeat:'',
                     name:'',
+                    email:'',
                     surname:'',
                     country:'United States',
                     address:'',

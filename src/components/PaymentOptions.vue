@@ -43,10 +43,10 @@ import { mapState } from 'vuex';
             return {
                 deliveryMethods:[
                     {
-                        img:"src/assets/payu.png",text:"PayU",name:"payu"
+                        img:"/src/assets/payu.png",text:"PayU",name:"payu"
                     },
                     {
-                        img:"src/assets/Przelew.png",text:"Przelew bankowy - zwykły",name:"przelew"
+                        img:"/src/assets/Przelew.png",text:"Przelew bankowy - zwykły",name:"przelew"
                     },
                 ],
                 deliveryMethodsSelect:[
@@ -69,7 +69,6 @@ import { mapState } from 'vuex';
             },
             changePaymentMethod(ev){
                 let method = ev.target.value;
-                console.log(method)
                 this.$store.commit("setPaymentMethod",method)
             },
             removeCode(){
